@@ -1,0 +1,23 @@
+---
+import Base from "../layouts/Base.astro";
+import Logo from "../components/Logo.astro";
+import { contacts } from "../data/site";
+const home = import.meta.env.BASE_URL;
+---
+<Base lang="uk" title="Сторінку не знайдено — КСЕНКО" description="Такої сторінки немає. Поверніться на головну КСЕНКО або зверніться у відділ продажів.">
+  <section class="nf" aria-labelledby="nf-title">
+    <div class="container nf__inner">
+      <a class="nf__logo" href={home} aria-label="КСЕНКО — на головну"><Logo /></a>
+      <h1 id="nf-title" class="nf__title">Такої сторінки немає</h1>
+      <p class="nf__text">Можливо, адресу змінено. Почніть з головної або зверніться у відділ продажів: <a class="text-link" href={contacts.sales.href}>{contacts.sales.label}</a></p>
+      <p><a class="btn btn--action" href={home}><span class="btn__text"><span class="btn__main">На головну</span></span></a></p>
+    </div>
+  </section>
+</Base>
+<style>
+  .nf { min-height: 100svh; display: grid; align-content: center; padding-block: var(--space-3xl); }
+  .nf__inner { display: grid; gap: var(--space-lg); justify-items: start; }
+  .nf__logo { color: var(--color-text); display: inline-flex; margin-bottom: var(--space-xl); }
+  .nf__title { font-size: var(--text-h2); text-wrap: balance; }
+  .nf__text { max-width: 48ch; color: var(--color-text-muted); }
+</style>

@@ -1,0 +1,111 @@
+/* Hallmark · shape: triptych around the machine · genre: modern-minimal · theme: custom · job: hire · idea: "Апарат стоїть у відділенні — КСЕНКО приходить до нього" · vibe: "інженерна точність, світло апаратної, фірмові кольори знаку"
+ * paper: #EEF2F4 · accent: #FBBE00 · display: Martian Grotesk (wide 112–125) · body: Martian Grotesk (100) · hero: тріптих навколо реального апарата HS40 на лінії підлоги · nav: edge-aligned light bar, anchors + sales phone with its label · footer: colophon block on light grey, contacts by department · imagery: the product · signature: той самий апарат HS40 проходить шість етапів циклу
+ * axes: light/grotesk-wide/chromatic-yellow · posture: full-palette · surface: absolute (#FFFFFF brands panel, from the concept) · contrast: pass · fold: pass · v2.0.0 */
+/* Hallmark · pre-emit critique: P4 H4 E4 S4 R4 V4 · weakest: E (one family), answered with the width axis: wide heads and phones, standard text, narrow labels */
+/* Hallmark · waive 7b · #FFFFFF is listed in the approved veon-concept colors (surface of the brands panel and the menu, text on the ink button) · the client concept outranks Hallmark (docs/process/hallmark.md, priority 2) */
+/* Hallmark · waive 39b · a.btn 56px (hero sales phone, office phone on the service field) · the approved concept sets the phone buttons at 56px with the number and the department on two lines (design/concept.md, «Кнопки») */
+/* Hallmark · waive 44c · [1440px] hero visual centre 136px from the text block centre · the concept triptych stands the HS40 on the floor line with the stage list, so the machine is bottom-aligned, not centred on the H1 (design/concept.md, «Перший екран») */
+/* Hallmark · answered F4 · the concept defines two button roles: yellow action (sales phone, e-mail) and ink secondary (office phone on the blue service field, where yellow would clash with the brand field) */
+/* Client design tokens: from design/concept.md (veon-concept colors, fonts). One token system, no second set. */
+
+@font-face {
+  font-family: "Martian Grotesk";
+  src: url("../assets/fonts/MartianGrotesk-VFVF.woff2") format("woff2-variations"), url("../assets/fonts/MartianGrotesk-VFVF.woff2") format("woff2");
+  font-weight: 100 1000;
+  font-stretch: 75% 125%;
+  font-style: normal;
+  font-display: swap;
+}
+/* Metric-matched fallback so the swap does not shift the layout much. */
+@font-face {
+  font-family: "Martian Grotesk Fallback";
+  src: local("Arial"), local("Liberation Sans"), local("Helvetica");
+  size-adjust: 108%;
+  ascent-override: 92%;
+  descent-override: 24%;
+  line-gap-override: 0%;
+}
+
+:root {
+  /* colour roles (concept §5 «Палітра») */
+  --color-bg: #EEF2F4;
+  --color-surface: #FFFFFF;
+  --color-text: #0E1C2B;
+  --color-text-muted: #4A5866;
+  --color-brand: #0095DC;
+  --color-link: #00699E;
+  --color-accent: #FBBE00;
+  --color-signal: #DB2033;
+  --color-border: #C9D2D9;
+  --color-line: #7D8B97;
+  --color-footer: #E2E8EC;
+  --color-focus: var(--color-text);
+  --color-on-ink: var(--color-surface);
+  --color-accent-ink: var(--color-text);
+  --color-ink-hover: color-mix(in oklab, var(--color-text) 86%, var(--color-surface));
+  --color-accent-hover: color-mix(in oklab, var(--color-accent) 88%, var(--color-text));
+  --color-shade: color-mix(in oklab, var(--color-text) 8%, transparent);
+
+  /* type: one variable family, three widths */
+  --font-display: "Martian Grotesk", "Martian Grotesk Fallback", system-ui, sans-serif;
+  --font-body: "Martian Grotesk", "Martian Grotesk Fallback", system-ui, sans-serif;
+  --wide: 112%;
+  --wider: 125%;
+  --narrow: 87.5%;
+  --w-text: 400;
+  --w-brand: 600;
+  --w-head: 720;
+  --w-hero-figure: 800;
+
+  /* scale 1440 / 390 (concept: 64/34, 40/28, 28/20, 18/17, 14/14, 224/112) */
+  --text-h1: clamp(1.875rem, 0.5rem + 7vw, 3rem);
+  --text-h2: clamp(1.5rem, 1.05rem + 1.9vw, 2.5rem);
+  --text-title: clamp(1.25rem, 1.06rem + 0.76vw, 1.75rem);
+  --text-md: clamp(1.0625rem, 1.04rem + 0.1vw, 1.125rem);
+  --text-sm: 0.875rem;
+  --text-figure: clamp(5.25rem, 26vw, 14rem);
+  --text-phone-xl: clamp(1.25rem, 6.2vw, 3rem);
+  --text-phone-l: clamp(1.25rem, 5.6vw, 2rem);
+  --lh-head: 1.05;
+  --lh-text: 1.55;
+
+  /* spacing scale, 8 px rhythm */
+  --space-3xs: 2px;
+  --space-2xs: 4px;
+  --space-xs: 8px;
+  --space-sm: 12px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 40px;
+  --space-2xl: 64px;
+  --space-3xl: 96px;
+  --space-4xl: 128px;
+  --section-pad: clamp(72px, 50px + 5.6vw, 128px);
+
+  /* grid */
+  --container: 1280px;
+  --gutter: clamp(20px, 6px + 3.6vw, 80px);
+  --gap-columns: clamp(16px, 13px + 0.76vw, 24px);
+  --space: var(--gutter);
+  --header-h: 72px;
+  --bar-h: 64px;
+
+  /* shape */
+  --radius: 4px;
+  --radius-field: 0;
+  --line: 1px;
+
+  /* motion */
+  --ease-out: cubic-bezier(.2, .7, .2, 1);
+  --ease-in: cubic-bezier(.4, 0, 1, 1);
+  --dur-micro: 120ms;
+  --dur-short: 200ms;
+  --dur: 600ms;
+  --dur-long: 800ms;
+
+  /* layers */
+  --z-sticky: 200;
+  --z-nav: 300;
+  --z-menu: 400;
+  --z-tooltip: 600;
+}

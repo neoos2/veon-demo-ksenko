@@ -1,0 +1,52 @@
+---
+import Base from "../layouts/Base.astro";
+import Header from "../components/Header.astro";
+import Hero from "../components/Hero.astro";
+import Directions from "../components/Directions.astro";
+import Brands from "../components/Brands.astro";
+import Cycle from "../components/Cycle.astro";
+import Service from "../components/Service.astro";
+import Contacts from "../components/Contacts.astro";
+import Footer from "../components/Footer.astro";
+import MobileBar from "../components/MobileBar.astro";
+import { contacts } from "../data/site";
+
+// veon-concept (design/concept.md): h1 verbatim, typographic apostrophe.
+const h1 = "Офіційний дистриб’ютор медичного обладнання понад 20 світових виробників";
+const title = "Медичне обладнання від офіційного дистриб’ютора — КСЕНКО";
+const description = "Офіційний дистриб’ютор медичного обладнання понад 20 світових виробників з 2002 року: продаж, інсталяція, навчання, сервіс по всій Україні.";
+
+const org = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: "КСЕНКО",
+  legalName: contacts.legal,
+  foundingDate: "2002",
+  email: contacts.email.address,
+  telephone: "+380445410800",
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: "вулиця Флоренції, 1/11, офіс 197",
+    addressLocality: "Київ",
+    postalCode: "02002",
+    addressCountry: "UA",
+  },
+  contactPoint: [
+    { "@type": "ContactPoint", telephone: "+380506405289", contactType: "sales", areaServed: "UA", availableLanguage: ["uk"] },
+    { "@type": "ContactPoint", telephone: "+380445410800", contactType: "customer service", areaServed: "UA", availableLanguage: ["uk"] },
+  ],
+  sameAs: [contacts.facebook],
+};
+---
+<Base lang="uk" title={title} description={description}>
+  <script slot="head" type="application/ld+json" data-rec="SE-R003" set:html={JSON.stringify(org)} />
+  <Header slot="header" />
+  <Hero h1={h1} />
+  <Directions />
+  <Brands />
+  <Cycle />
+  <Service />
+  <Contacts />
+  <Footer slot="footer" />
+  <MobileBar slot="footer" />
+</Base>

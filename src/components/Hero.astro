@@ -1,0 +1,153 @@
+---
+import { Picture } from "astro:assets";
+import Icon from "./Icon.astro";
+import { contacts, machine, stages } from "../data/site";
+interface Props { h1: string; }
+const { h1 } = Astro.props;
+---
+<section id="hero" class="hero" aria-labelledby="hero-title">
+  <div class="container hero__grid">
+    <div class="hero__text">
+      <h1 id="hero-title" class="hero__title" data-rec="SE-R001">{h1}</h1>
+      <p class="hero__lead">З 2002 року — {contacts.legal}, Київ.</p>
+      <div class="hero__actions" data-rec="UX-R01,GA-R001,MA-R004">
+        <a class="btn btn--action btn--block-sm" href={contacts.sales.href}>
+          <Icon name="phone" size={22} />
+          <span class="btn__text"><span class="btn__main">{contacts.sales.label}</span><span class="btn__sub">{contacts.sales.dept}</span></span>
+        </a>
+        <p class="hero__more">
+          <a class="text-link" href={contacts.email.href}>{contacts.email.address}</a>
+          <a class="hero__anchor" href="#directions">10 напрямів обладнання<Icon name="arrow-down" size={18} /></a>
+        </p>
+      </div>
+    </div>
+
+    <figure class="hero__machine" data-rec="SE-R002">
+      <Picture
+        src={machine.img}
+        alt={machine.alt}
+        widths={[240, 360, 478]}
+        sizes="(min-width: 60rem) 300px, 46vw"
+        formats={["avif", "webp"]}
+        fallbackFormat="jpg"
+        loading="eager"
+        fetchpriority="high"
+        class="hero__img"
+      />
+    </figure>
+
+    <div class="hero__after" data-rec="UX-R05">
+      <div class="hero__after-title" id="after-title">Після покупки</div>
+      <ol class="hero__stages" aria-labelledby="after-title">
+        {stages.map((s) => (
+          <li class:list={["hero__stage", { "hero__stage--service": "service" in s && s.service }]}>
+            <span>{s.name}</span>
+            {"service" in s && s.service && <span class="hero__stage-note">92&nbsp;% ремонтів — у вашому закладі</span>}
+          </li>
+        ))}
+      </ol>
+    </div>
+
+    <div class="hero__office" data-rec="UX-R02">
+      <a class="hero__office-phone" href={contacts.office.href}>
+        <span class="hero__office-num">{contacts.office.label}</span>
+        <span class="hero__office-dept"><span class="signal" aria-hidden="true"></span>{contacts.office.dept}, у т. ч. сервіс</span>
+      </a>
+    </div>
+
+    <div class="hero__floor" aria-hidden="true"></div>
+    <p class="hero__caption">{machine.caption}</p>
+  </div>
+</section>
+
+<style>
+  .hero { padding-top: var(--space-xl); padding-bottom: var(--space-2xl); }
+  .hero__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr);
+    grid-template-areas:
+      "text text"
+      "machine after"
+      "floor floor"
+      "caption caption"
+      "office office";
+    column-gap: var(--gap-columns);
+  }
+  .hero__text { grid-area: text; display: grid; gap: var(--space-lg); padding-bottom: var(--space-xl); }
+  .hero__title { font-size: var(--text-h1); font-stretch: var(--wide); line-height: var(--lh-head); letter-spacing: -0.015em; max-width: 16ch; text-wrap: balance; }
+  .hero__lead { max-width: 40ch; color: var(--color-text); }
+  .hero__actions { display: grid; gap: var(--space-md); }
+  .hero__actions .btn, .hero__actions .btn span { white-space: nowrap; }
+  @media (min-width: 40rem) { .hero__actions .btn { justify-self: start; } }
+  .hero__more { display: flex; flex-wrap: wrap; align-items: center; column-gap: var(--space-lg); row-gap: var(--space-xs); }
+  .hero__more a { min-height: 44px; display: inline-flex; align-items: center; }
+  .hero__anchor { gap: var(--space-xs); color: var(--color-text); text-decoration: none; font-weight: var(--w-brand); }
+  .hero__anchor:hover { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 0.25em; }
+  .hero__anchor :global(.icon) { transition: transform var(--dur-short) var(--ease-out); }
+  .hero__anchor:hover :global(.icon) { transform: translateY(3px); }
+
+  .hero__machine { grid-area: machine; align-self: end; display: flex; justify-content: center; min-width: 0; }
+  .hero__machine :global(img) { width: auto; max-width: 100%; max-height: min(58svh, 540px); height: auto; }
+  .hero__machine :global(picture) { display: block; mix-blend-mode: multiply; }
+
+  .hero__after { grid-area: after; align-self: end; display: grid; gap: var(--space-sm); padding-bottom: var(--space-md); }
+  .hero__after-title { font-size: var(--text-sm); color: var(--color-text-muted); }
+  .hero__stages { display: grid; gap: var(--space-xs); counter-reset: stage; }
+  .hero__stage { position: relative; display: grid; padding-left: 1.25rem; font-size: var(--text-sm); font-stretch: var(--narrow); line-height: 1.3; counter-increment: stage; }
+  .hero__stage::before { content: counter(stage); position: absolute; left: 0; top: 0; color: var(--color-text-muted); }
+  .hero__stage--service { font-weight: var(--w-brand); }
+  .hero__stage-note { font-weight: var(--w-text); color: var(--color-text-muted); }
+  .hero__stage--service > span:first-child::after { content: ""; display: inline-block; width: 8px; height: 8px; margin-left: var(--space-xs); background: var(--color-signal); vertical-align: 0.1em; }
+
+  .hero__floor { grid-area: floor; border-top: var(--line) solid var(--color-line); }
+  .hero__caption { grid-area: caption; padding-top: var(--space-sm); font-size: var(--text-sm); font-stretch: var(--narrow); color: var(--color-text-muted); }
+
+  .hero__office { grid-area: office; padding-top: var(--space-lg); }
+  .hero__office-phone { display: inline-grid; text-decoration: none; color: var(--color-text); min-height: 44px; }
+  .hero__office-num { font-size: 1.25rem; font-weight: var(--w-brand); font-stretch: var(--wide); white-space: nowrap; }
+  .hero__office-phone:hover .hero__office-num { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 0.2em; }
+  .hero__office-dept { display: inline-flex; align-items: center; gap: var(--space-xs); font-size: var(--text-sm); color: var(--color-text-muted); }
+  .signal { display: inline-block; width: 8px; height: 8px; background: var(--color-signal); flex-shrink: 0; }
+
+  @media (max-width: 40rem) {
+    .hero { padding-top: var(--space-md); padding-bottom: var(--space-xl); }
+    .hero__title { font-size: clamp(1.625rem, 7.8vw, 2.25rem); max-width: none; }
+    .hero__text { gap: var(--space-md); padding-bottom: var(--space-lg); }
+    .hero__actions { gap: var(--space-xs); }
+    .hero__machine { justify-content: flex-start; }
+    .hero__machine :global(img) { max-height: 300px; }
+  }
+
+  /* 1440 triptych: 5 + 3 + 4 columns resting on one floor line */
+  @media (min-width: 60rem) {
+    .hero { min-height: calc(100svh - var(--header-h)); display: grid; align-content: center; padding-block: var(--space-lg) var(--space-xl); }
+    .hero__grid {
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      grid-template-areas:
+        "text text text text text text machine machine machine after after after"
+        "text text text text text text machine machine machine office office office"
+        "floor floor floor floor floor floor floor floor floor floor floor floor"
+        ". . . . . caption caption caption caption . . .";
+      grid-template-rows: 1fr auto auto auto;
+    }
+    .hero__text { align-self: center; padding-bottom: var(--space-xl); padding-right: var(--space-lg); }
+    .hero__title { font-size: clamp(2rem, 3.05vw, 2.75rem); max-width: none; overflow-wrap: normal; hyphens: manual; }
+    .hero__machine { justify-content: center; }
+    .hero__after { align-self: start; padding-left: var(--space-md); padding-top: var(--space-xl); }
+    .hero__stage { font-size: 1rem; }
+    .hero__office { padding: 0 0 var(--space-md) var(--space-md); align-self: end; min-width: 0; }
+    .hero__office-num { font-size: min(1.25rem, 1.75vw); }
+    .hero__caption { text-align: center; white-space: nowrap; }
+  }
+
+  /* Motion 1: the machine rolls in once (transform + opacity); text stays still. */
+  @keyframes roll-in { from { opacity: 0; transform: translateX(24px); } to { opacity: 1; transform: none; } }
+  @keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+  :global(.js) .hero__machine :global(picture) { animation: fade-in 400ms var(--ease-out) both; }
+  @media (min-width: 60rem) {
+    :global(.js) .hero__machine :global(picture) { animation: roll-in 700ms var(--ease-out) both; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    :global(.js) .hero__machine :global(picture) { animation: none; }
+  }
+</style>

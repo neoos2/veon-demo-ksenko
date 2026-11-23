@@ -1,0 +1,39 @@
+---
+import FutureLink from "./FutureLink.astro";
+import { brands } from "../data/site";
+---
+<section id="brands" class="section brands" aria-labelledby="brands-title" data-rec="UX-R06">
+  <div class="container">
+    <div class="brands__head">
+      <h2 id="brands-title">Бренди, з якими ми працюємо</h2>
+      <p class="brands__lead">Обладнання цих виробників КСЕНКО постачає, встановлює і обслуговує.</p>
+    </div>
+    <ul class="brands__list" aria-label="Виробники, з якими працює КСЕНКО">
+      {brands.map((b) => <li class="brands__name" lang="en">{b}</li>)}
+    </ul>
+    <p class="brands__more"><FutureLink note="Сторінка брендів у розробці">Усі бренди і їхнє обладнання</FutureLink></p>
+  </div>
+</section>
+
+<style>
+  .brands { background: var(--color-surface); }
+  .brands__head { display: grid; gap: var(--space-md); margin-bottom: var(--space-2xl); }
+  .brands__head h2 { font-size: var(--text-h2); text-wrap: balance; max-width: 22ch; }
+  .brands__lead { color: var(--color-text-muted); max-width: 46ch; }
+  .brands__list { columns: 2; column-gap: var(--gap-columns); border-top: var(--line) solid var(--color-border); padding-top: var(--space-lg); }
+  .brands__name { break-inside: avoid; padding-block: var(--space-xs); font-size: clamp(1rem, 5vw, 1.25rem); font-weight: var(--w-brand); font-stretch: var(--wide); line-height: 1.2; overflow-wrap: break-word; }
+  .brands__more { margin-top: var(--space-xl); font-size: 1rem; }
+  .brands__more :global(.future-link) { min-height: 44px; }
+
+  @media (min-width: 40rem) {
+    .brands__list { columns: 3; }
+    .brands__name { font-size: var(--text-title); }
+  }
+  @media (min-width: 60rem) {
+    .brands__head { grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gap-columns); align-items: end; }
+    .brands__head h2 { grid-column: 1 / 9; }
+    .brands__lead { grid-column: 9 / 13; }
+    .brands__list { columns: 4; padding-top: var(--space-xl); }
+    .brands__name { padding-block: var(--space-sm); }
+  }
+</style>

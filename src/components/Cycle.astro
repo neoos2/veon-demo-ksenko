@@ -1,0 +1,125 @@
+---
+import { Picture } from "astro:assets";
+import { machine, stages } from "../data/site";
+---
+<section id="cycle" class="section cycle" aria-labelledby="cycle-title" data-rec="UX-R05">
+  <div class="container cycle__grid">
+    <div class="cycle__head">
+      <h2 id="cycle-title">Від продажу до постгарантійного сервісу</h2>
+      <p class="cycle__lead">Перед покупкою — консультації з вибору обладнання. Далі той самий апарат проходить шість етапів, і всі їх веде КСЕНКО.</p>
+    </div>
+
+    <div class="cycle__pin">
+      <div class="cycle__stage-box" data-cycle-pin>
+        <figure class="cycle__machine">
+          <Picture
+            src={machine.img}
+            alt="Той самий ультразвуковий апарат Samsung HS40, що проходить усі етапи обслуговування"
+            widths={[180, 360, 478]}
+            sizes="(min-width: 60rem) 260px, 120px"
+            formats={["avif", "webp"]}
+            loading="lazy"
+            decoding="async"
+          />
+        </figure>
+        <div class="cycle__meter" aria-hidden="true">
+          <span class="cycle__track"><span class="cycle__fill" data-cycle-fill></span></span>
+          <span class="cycle__counter" data-cycle-label>
+            <span class="cycle__count" data-cycle-count>6 етапів</span>
+            <span class="cycle__name" data-cycle-name>від продажу до постгарантії</span>
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <ol class="cycle__steps">
+      {stages.map((s, i) => (
+        <li class:list={["cycle__step", { "cycle__step--service": "service" in s && s.service }]} data-cycle-step data-name={s.name}>
+          <span class="cycle__step-num">{i + 1} з {stages.length}</span>
+          <h3 class="cycle__step-title">{s.name}</h3>
+          <p class="cycle__step-text">{s.text}</p>
+          {"service" in s && s.service && <a class="text-link cycle__step-link" href="#service">Як працює сервісна служба</a>}
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
+
+<style>
+  .cycle__grid { display: grid; gap: var(--space-xl); }
+  .cycle__head { display: grid; gap: var(--space-md); }
+  .cycle__head h2 { font-size: var(--text-h2); text-wrap: balance; max-width: 20ch; }
+  .cycle__lead { color: var(--color-text-muted); max-width: 52ch; }
+
+  .cycle__stage-box { display: flex; align-items: flex-end; gap: var(--space-lg); border-bottom: var(--line) solid var(--color-line); background: var(--color-bg); }
+  .cycle__machine :global(picture) { display: block; mix-blend-mode: multiply; }
+  .cycle__machine :global(img) { width: auto; height: auto; max-height: 200px; }
+  .cycle__meter { display: none; }
+
+  .cycle__steps { display: grid; counter-reset: step; }
+  .cycle__step { display: grid; gap: var(--space-xs); padding-block: var(--space-lg); border-bottom: var(--line) solid var(--color-border); }
+  .cycle__step:first-child { padding-top: 0; }
+  .cycle__step-num { font-size: var(--text-sm); font-stretch: var(--narrow); color: var(--color-text-muted); }
+  .cycle__step-title { font-size: var(--text-title); }
+  .cycle__step--service .cycle__step-title::before { content: ""; display: inline-block; width: 8px; height: 8px; margin-right: var(--space-sm); background: var(--color-signal); vertical-align: 0.2em; }
+  .cycle__step-text { max-width: 46ch; }
+  .cycle__step-link { justify-self: start; min-height: 44px; display: inline-flex; align-items: center; }
+
+  /* Signature at 1440: the HS40 holds still (sticky) while the six stages pass by it. */
+  @media (min-width: 60rem) {
+    .cycle__grid { grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gap-columns); row-gap: var(--space-xl); }
+    .cycle__head { grid-column: 1 / 13; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gap-columns); align-items: end; }
+    .cycle__head h2 { grid-column: 1 / 8; }
+    .cycle__lead { grid-column: 8 / 13; }
+    .cycle__pin { grid-column: 1 / 7; }
+    .cycle__stage-box { position: sticky; top: calc(var(--header-h) + var(--space-xl)); height: auto; max-height: none; align-items: flex-end; justify-content: flex-start; gap: var(--space-2xl); }
+    .cycle__machine :global(img) { max-height: min(56svh, 520px); }
+    .cycle__meter { display: flex; align-items: flex-end; gap: var(--space-lg); padding-bottom: var(--space-lg); }
+    .cycle__track { position: relative; display: block; width: 2px; height: 220px; background: var(--color-border); }
+    .cycle__fill { position: absolute; inset: 0; background: var(--color-text); transform-origin: top; transform: scaleY(1); transition: transform 400ms var(--ease-out); }
+    .cycle__counter { display: grid; gap: var(--space-2xs); transition: opacity 300ms var(--ease-out), transform 300ms var(--ease-out); }
+    .cycle__counter.is-changing { opacity: 0; transform: translateY(8px); }
+    .cycle__count { font-size: var(--text-sm); font-stretch: var(--narrow); color: var(--color-text-muted); }
+    .cycle__name { font-size: var(--text-title); font-weight: var(--w-head); font-stretch: var(--wide); line-height: 1.15; max-width: 12ch; }
+    .cycle__steps { grid-column: 8 / 13; }
+    .cycle__step { padding-block: var(--space-lg); }
+    .cycle__step-text { max-width: 52ch; }
+    .cycle__step:first-child { padding-top: 0; }
+    .cycle__step-title { font-size: var(--text-title); text-wrap: balance; }
+  }
+</style>
+
+<script>
+  // Motion 2: the counter beside the pinned machine follows the stage in view (desktop, motion allowed only).
+  const pin = document.querySelector<HTMLElement>("[data-cycle-pin]");
+  const steps = Array.from(document.querySelectorAll<HTMLElement>("[data-cycle-step]"));
+  const label = document.querySelector<HTMLElement>("[data-cycle-label]");
+  const count = document.querySelector<HTMLElement>("[data-cycle-count]");
+  const nameEl = document.querySelector<HTMLElement>("[data-cycle-name]");
+  const fill = document.querySelector<HTMLElement>("[data-cycle-fill]");
+  const wide = window.matchMedia("(min-width: 60rem)");
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+  if (pin && label && count && nameEl && fill && steps.length && "IntersectionObserver" in window && !reduce.matches) {
+    let current = -1;
+    let timer = 0;
+    const show = (i: number) => {
+      if (i === current) return;
+      current = i;
+      fill.style.transform = `scaleY(${(i + 1) / steps.length})`;
+      label.classList.add("is-changing");
+      window.clearTimeout(timer);
+      timer = window.setTimeout(() => {
+        count.textContent = `${i + 1} з ${steps.length}`;
+        nameEl.textContent = steps[i]?.dataset.name ?? "";
+        label.classList.remove("is-changing");
+      }, 150);
+    };
+    const io = new IntersectionObserver((entries) => {
+      if (!wide.matches) return;
+      for (const e of entries) if (e.isIntersecting) show(steps.indexOf(e.target as HTMLElement));
+    }, { rootMargin: "-40% 0px -50% 0px" });
+    steps.forEach((s) => io.observe(s));
+    show(0);
+  }
+</script>

@@ -1,0 +1,33 @@
+---
+import Icon from "./Icon.astro";
+import { contacts } from "../data/site";
+---
+<div class="mbar" data-mbar data-rec="UX-R01,GA-R001,MA-R004">
+  <a class="mbar__btn mbar__btn--call" href={contacts.sales.href} aria-label={`Зателефонувати у відділ продажів: ${contacts.sales.label}`}><Icon name="phone" size={20} />Зателефонувати</a>
+  <a class="mbar__btn mbar__btn--write" href={contacts.email.href} aria-label={`Написати на ${contacts.email.address}`}><Icon name="mail" size={20} />Написати</a>
+</div>
+
+<style>
+  .mbar { display: none; }
+  @media (max-width: 40rem) {
+    .mbar { position: fixed; left: 0; right: 0; bottom: 0; z-index: var(--z-sticky); display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-xs); padding: var(--space-xs) var(--space-md) calc(var(--space-xs) + env(safe-area-inset-bottom)); background: var(--color-surface); border-top: var(--line) solid var(--color-border); transition: transform 260ms var(--ease-out), visibility 0s linear 0s; }
+    .mbar.is-tucked { transform: translateY(100%); visibility: hidden; transition: transform 260ms var(--ease-in), visibility 0s linear 260ms; }
+  }
+  .mbar__btn { display: inline-flex; align-items: center; justify-content: center; gap: var(--space-xs); min-height: 48px; border-radius: var(--radius); font-weight: var(--w-brand); text-decoration: none; white-space: nowrap; transition: transform var(--dur-micro) var(--ease-out), background-color var(--dur-micro) var(--ease-out); }
+  .mbar__btn:active { transform: scale(.98); }
+  .mbar__btn--call { background: var(--color-accent); color: var(--color-accent-ink); }
+  .mbar__btn--write { border: var(--line) solid var(--color-line); color: var(--color-text); }
+  @media (prefers-reduced-motion: reduce) {
+    .mbar.is-tucked { transform: none; }
+  }
+</style>
+
+<script>
+  // Motion 5 (panel): the bar shows once the first screen with its own call button has scrolled away.
+  const bar = document.querySelector<HTMLElement>("[data-mbar]");
+  const hero = document.getElementById("hero");
+  if (bar && hero && "IntersectionObserver" in window) {
+    // Visible by default (no script = always shown); tucked away only while the first screen is in view.
+    new IntersectionObserver(([e]) => { if (e) bar.classList.toggle("is-tucked", e.isIntersecting); }, { threshold: 0 }).observe(hero);
+  }
+</script>

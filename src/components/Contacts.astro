@@ -1,0 +1,64 @@
+---
+import Icon from "./Icon.astro";
+import { contacts } from "../data/site";
+---
+<section id="contacts" class="section contacts" aria-labelledby="contacts-title" data-rec="UX-R02">
+  <div class="container">
+    <h2 id="contacts-title" class="contacts__title">Контакти відділу продажів і головного офісу</h2>
+
+    <div class="contacts__grid">
+      <div class="contacts__dept contacts__dept--sales">
+        <h3 class="contacts__dept-title">Купити обладнання</h3>
+        <a class="contacts__phone contacts__phone--xl" href={contacts.sales.href}>{contacts.sales.label}</a>
+        <p class="contacts__dept-name">{contacts.sales.dept}</p>
+      </div>
+      <div class="contacts__dept contacts__dept--office">
+        <h3 class="contacts__dept-title">Сервіс і загальні питання</h3>
+        <a class="contacts__phone contacts__phone--l" href={contacts.office.href}>{contacts.office.label}</a>
+        <p class="contacts__dept-name"><span class="signal" aria-hidden="true"></span>{contacts.office.dept}</p>
+      </div>
+    </div>
+
+    <div class="contacts__details">
+      <div class="contacts__mail">
+        <a class="contacts__email" href={contacts.email.href}><Icon name="mail" size={22} />{contacts.email.address}</a>
+        <p class="contacts__hint">У листі вкажіть заклад, місто і напрям або модель обладнання.</p>
+      </div>
+      <address class="contacts__address" data-rec="SE-R003">
+        <span class="contacts__legal">{contacts.legal}</span>
+        <span>{contacts.address}</span>
+      </address>
+      <p class="contacts__social"><a class="text-link" href={contacts.facebook} rel="noopener" target="_blank">КСЕНКО у Facebook<span class="visually-hidden"> (відкриється в новій вкладці)</span></a></p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .contacts__title { font-size: var(--text-h2); text-wrap: balance; max-width: 22ch; margin-bottom: var(--space-2xl); }
+  .contacts__grid { display: grid; gap: var(--space-xl); }
+  .contacts__dept { display: grid; gap: var(--space-xs); align-content: start; padding-top: var(--space-lg); border-top: var(--line) solid var(--color-line); }
+  .contacts__dept-title { font-size: 1.125rem; font-stretch: 100%; font-weight: var(--w-brand); line-height: 1.3; }
+  .contacts__phone { justify-self: start; color: var(--color-text); text-decoration: none; font-weight: var(--w-head); font-stretch: var(--wide); line-height: 1.1; white-space: nowrap; min-height: 44px; display: inline-flex; align-items: center; }
+  .contacts__phone:hover { text-decoration: underline; text-decoration-thickness: 3px; text-underline-offset: 0.15em; text-decoration-color: var(--color-accent); }
+  .contacts__phone--xl { font-size: var(--text-phone-xl); }
+  .contacts__phone--l { font-size: var(--text-phone-l); }
+  .contacts__dept-name { display: inline-flex; align-items: center; gap: var(--space-xs); color: var(--color-text-muted); font-size: var(--text-sm); }
+
+  .contacts__details { display: grid; gap: var(--space-xl); margin-top: var(--space-2xl); padding-top: var(--space-xl); border-top: var(--line) solid var(--color-border); }
+  .contacts__mail { display: grid; gap: var(--space-xs); }
+  .contacts__email { display: inline-flex; align-items: center; gap: var(--space-sm); justify-self: start; min-height: 44px; color: var(--color-link); font-size: var(--text-title); font-weight: var(--w-brand); font-stretch: var(--wide); text-underline-offset: 0.2em; }
+  .contacts__email:hover { text-decoration-thickness: 2px; }
+  .contacts__hint { color: var(--color-text-muted); max-width: 40ch; }
+  .contacts__address { display: grid; gap: var(--space-2xs); max-width: 36ch; }
+  .contacts__legal { font-weight: var(--w-brand); }
+  .contacts__social a { min-height: 44px; display: inline-flex; align-items: center; }
+  .signal { display: inline-block; width: 8px; height: 8px; background: var(--color-signal); flex-shrink: 0; }
+
+  @media (min-width: 60rem) {
+    .contacts__grid { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); column-gap: var(--space-2xl); }
+    .contacts__phone--xl { font-size: min(var(--text-phone-xl), 3.3vw); }
+    .contacts__phone--l { font-size: min(var(--text-phone-l), 2.2vw); }
+    .contacts__dept--office { padding-left: var(--space-xl); border-left: var(--line) solid var(--color-line); }
+    .contacts__details { grid-template-columns: 7fr 3fr 2fr; column-gap: var(--space-2xl); }
+  }
+</style>
